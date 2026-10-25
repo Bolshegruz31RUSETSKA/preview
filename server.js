@@ -93,7 +93,7 @@ No borders, no mockups, no user interface, no collage panels.
 `;
 
     const endpoint =
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/runwayml/stable-diffusion-v1-5-inpainting`;
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/runwayml/stable-diffusion-v1-5-img2img`;
 
     const apiResponse = await fetch(endpoint, {
       method: "POST",
