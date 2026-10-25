@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <title>Thumbnail AI — генератор превью</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-icon">✦</span><span>thumbnail<span class="brand-ai">.ai</span></span></a>
+    <div class="top-note"><span class="status-dot"></span> AI-СТУДИЯ ДЛЯ АВТОРОВ</div>
+  </header>
+
+  <main class="layout">
+    <section class="intro">
+      <div class="eyebrow"><span>✦</span> ТВОЯ ИДЕЯ → ГОТОВОЕ ПРЕВЬЮ</div>
+      <h1>Превью, которое<br> <span>цепляет взгляд.</span></h1>
+      <p class="intro-copy">Опиши ролик, добавь референс — нейросеть превратит идею в яркую YouTube-обложку.</p>
+      <div class="feature-row">
+        <div class="feature"><span class="feature-icon">↗</span><span>Формат 16:9</span></div>
+        <div class="feature"><span class="feature-icon">◎</span><span>Фото как референс</span></div>
+        <div class="feature"><span class="feature-icon">✧</span><span>AI-генерация</span></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <form id="generatorForm" class="form-panel">
+        <div class="panel-heading"><div><span class="step">01</span><h2>Расскажи про видео</h2></div><span class="required">ОБЯЗАТЕЛЬНО</span></div>
+        <label for="idea">Что происходит в ролике?</label>
+        <textarea id="idea" name="idea" rows="4" maxlength="1800" placeholder="Например: восстановил старую Volvo FH, поставил новые колёса и впервые выехал на трассу. Хочу мощное превью с грузовиком в центре и драматичным небом..." required></textarea>
+        <div class="field-foot"><span>Чем конкретнее описание, тем лучше результат</span><span id="charCount">0 / 1800</span></div>
+
+        <div class="panel-heading second-heading"><div><span class="step">02</span><h2>Добавь референс</h2></div><span class="required">ОБЯЗАТЕЛЬНО</span></div>
+        <label class="upload-zone" id="uploadZone" for="reference">
+          <input id="reference" name="reference" type="file" accept="image/png,image/jpeg,image/webp" required>
+          <span class="upload-content" id="uploadContent">
+            <span class="upload-icon">↑</span>
+            <strong>Нажми, чтобы выбрать фото</strong>
+            <span>или перетащи изображение сюда</span>
+            <small>JPG, PNG или WEBP · до 12 МБ</small>
+          </span>
+          <img id="referencePreview" alt="Предпросмотр референса" hidden>
+          <span class="change-file" id="changeFile" hidden>Заменить фото</span>
+        </label>
+        <p class="hint">Используй фото, которое нейросеть должна взять за визуальную основу.</p>
+
+        <div class="panel-heading second-heading"><div><span class="step">03</span><h2>Настрой стиль</h2></div><span class="optional">ПО ЖЕЛАНИЮ</span></div>
+        <div class="style-grid">
+          <label class="style-option selected"><input type="radio" name="style" value="cinematic" checked><span class="style-symbol">◈</span><span><b>Кинематографичный</b><small>Драма и контраст</small></span><span class="radio-dot"></span></label>
+          <label class="style-option"><input type="radio" name="style" value="realistic"><span class="style-symbol">◉</span><span><b>Реалистичный</b><small>Максимум деталей</small></span><span class="radio-dot"></span></label>
+          <label class="style-option"><input type="radio" name="style" value="gaming"><span class="style-symbol">✹</span><span><b>Игровой</b><small>Ярко и динамично</small></span><span class="radio-dot"></span></label>
+          <label class="style-option"><input type="radio" name="style" value="minimal"><span class="style-symbol">▧</span><span><b>Минимализм</b><small>Чистая композиция</small></span><span class="radio-dot"></span></label>
+        </div>
+        <label for="headline" class="headline-label">Текст на превью <span>необязательно</span></label>
+        <input id="headline" name="headline" type="text" maxlength="70" placeholder="Например: VOLVO СНОВА В ДЕЛЕ">
+        <p class="hint">Генеративная модель может неточно написать текст. Для идеальной типографики лучше добавить надпись после генерации.</p>
+        <button class="generate-button" id="generateButton" type="submit"><span class="button-sparkle">✦</span><span id="buttonText">Создать превью</span><span class="button-arrow">↗</span></button>
+        <p class="privacy-note">Фото отправляется на сервер для генерации. Не загружай конфиденциальные изображения.</p>
+      </form>
+
+      <aside class="result-panel">
+        <div class="result-top"><div><span class="step">РЕЗУЛЬТАТ</span><h2>Твоя обложка</h2></div><span class="ratio-badge">16:9</span></div>
+        <div class="canvas-wrap" id="canvasWrap">
+          <div class="empty-state" id="emptyState">
+            <div class="preview-icon"><span>✦</span></div>
+            <div class="empty-title">Здесь появится магия</div>
+            <p>Заполни форму слева<br>и нажми «Создать превью»</p>
+            <div class="skeleton-lines"><i></i><i></i><i></i></div>
+          </div>
+          <div class="loading-state" id="loadingState" hidden><div class="loader-orbit"><span>✦</span></div><strong>Создаём твоё превью</strong><p>Нейросеть работает над композицией…</p><div class="loading-bar"><i></i></div><small>Обычно это занимает некоторое время</small></div>
+          <img id="resultImage" alt="Сгенерированное превью" hidden>
+        </div>
+        <div class="result-meta"><span><i class="meta-dot"></i><span id="resultStatus">Ожидает генерации</span></span><span>PNG · 16:9</span></div>
+        <button id="downloadButton" class="download-button" disabled><span>↓</span> Скачать превью</button>
+        <div class="result-tip"><span>✧</span><p><b>Совет:</b> если результат не попал в задумку, уточни описание и сгенерируй ещё раз.</p></div>
+        <div class="error-message" id="errorMessage" role="alert" hidden></div>
+      </aside>
+    </section>
+    <footer><span>THUMBNAIL.AI</span><span>Сделано для авторов, у которых есть идеи.</span></footer>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
